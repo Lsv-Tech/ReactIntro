@@ -42,11 +42,7 @@
             <span id="greenBack"></span>
             <span id="reset"></span>
         </div>
-        <div id="dashboardTextSize">
-            <h3>Change Text Size</h3>
-            <input id="dhSize" type="text"/>
-            <button id="dshTextSize" data-target="#dhSize">Apply</button>
-        </div>
+        <div id="dashboardTextSize"></div>
     </section>
 </main>
 
@@ -54,6 +50,7 @@
 <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 <script src="components/changeColorDashBtn.js"></script>
+<script src="components/changeTxtSizeBtn.js"></script>
 <script>
     (function ($) {
 
@@ -107,14 +104,8 @@
                 ReactDOM.render(component, ele.element);
             });
 
-            $('#dshTextSize').on('click', function () {
-                const sizeSource = $(this.dataset.target).val();
-                console.log(sizeSource);
-                doc.find('p').each(function (idx, ele) {
-                    $(ele).css('font-size', sizeSource + 'px');
-                });
-
-            });
+            let cgText = React.createElement(TxtChangeContainer, {}, null);
+            ReactDOM.render(cgText, document.getElementById('dashboardTextSize'));
         });
     })(jQuery);
 </script>
