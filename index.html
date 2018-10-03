@@ -10,6 +10,7 @@
     <h1>Person information List</h1>
 </header>
 <hr>
+<div id="root"></div>
 <main>
     <section class="data">
         <div class="person_container">
@@ -48,10 +49,16 @@
         </div>
     </section>
 </main>
+
 <script src="js/jquery-3.3.1.min.js"></script>
+<script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
+<script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
 <script>
     (function ($) {
         $(document).ready(function () {
+            let h = React.createElement('h1', {}, 'Hello react is here');
+            const document_body = document.getElementById('root');
+            ReactDOM.render(h, document_body);
             const doc = $(this);
             $('.changeBtn').on('click', function () {
                 const color = $(this).css('background-color');
