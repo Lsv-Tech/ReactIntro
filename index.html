@@ -37,10 +37,10 @@
     <section class="options">
         <div id="dashboardColor">
             <h3>Select a Color</h3>
-            <button style="background: #648fea" class="changeBtn">Blue</button>
-            <button style="background: #eae023" class="changeBtn">Yellow</button>
-            <button style="background: #91cc78" class="changeBtn">Green</button>
-            <button class="changeBtn">Reset</button>
+            <span id="blueBack"></span>
+            <span id="yellowBack"></span>
+            <span id="greenBack"></span>
+            <span id="reset"></span>
         </div>
         <div id="dashboardTextSize">
             <h3>Change Text Size</h3>
@@ -53,34 +53,65 @@
 <script src="js/jquery-3.3.1.min.js"></script>
 <script src="https://unpkg.com/react@16/umd/react.development.js" crossorigin></script>
 <script src="https://unpkg.com/react-dom@16/umd/react-dom.development.js" crossorigin></script>
+<script src="components/changeColorDashBtn.js"></script>
 <script>
     (function ($) {
+
         $(document).ready(function () {
             let h = React.createElement('h1', {}, 'Hello react is here');
             const document_body = document.getElementById('root');
             ReactDOM.render(h, document_body);
             const doc = $(this);
-            $('.changeBtn').on('click', function () {
-                const color = $(this).css('background-color');
 
-                doc.find('b').each(function (idx, ele) {
+            const data = [
+                {
+                    element: document.getElementById('blueBack'),
+                    props: {color: '#648fea', msg: 'blue'}
+                },
+                {
+                    element: document.getElementById('yellowBack'),
+                    props: {color: '#eae023', msg: 'Yellow'}
+                }
+                ,
+                {
+                    element: document.getElementById('greenBack'),
+                    props: {color: '#91cc78', msg: 'Green'}
+                },
+                {
+                    element: document.getElementById('reset'),
+                    props: {msg: 'Reset'}
+                }
+            ];
 
-                    $(ele).css('color', color);
-                });
+            let props = {
+                color: '',
+                msg: '',
+                click_extra: function (color) {
+                    doc.find('b').each(function (idx, ele) {
+                        $(ele).css('color', (color) ? color : '');
+                    });
 
-                doc.find('button').each(function (idx, ele) {
-                    if (!$(this).hasClass('changeBtn')) {
-                        $(ele).css('background', color);
-                    }
-                });
+                    doc.find('button').each(function (idx, ele) {
+                        if (!$(ele).hasClass('changeBtn')) {
+                            $(ele).css('background', (color) ? color : '');
+                        }
+                    });
 
+                }
+            };
+
+            data.forEach(function (ele, idx) {
+                const color = ele.props.color;
+                const msg = ele.props.msg;
+                let component = React.createElement(ChButton, {...props, color, msg});
+                ReactDOM.render(component, ele.element);
             });
 
             $('#dshTextSize').on('click', function () {
-                const sizeSource = $(this.dataset.target).val()
+                const sizeSource = $(this.dataset.target).val();
                 console.log(sizeSource);
                 doc.find('p').each(function (idx, ele) {
-                    $(ele).css('font-size', sizeSource+'px');
+                    $(ele).css('font-size', sizeSource + 'px');
                 });
 
             });
