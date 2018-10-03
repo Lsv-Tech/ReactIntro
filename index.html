@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>My Single jQuery App</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header>
+    <h1>Person information List</h1>
+</header>
+<hr>
+<main>
+    <section class="data">
+        <div class="person_container">
+            <div class="profile">
+                <img src="public/imgs/women1.png" alt="person1profile" width="200px" height="200px">
+            </div>
+            <div class="person_data">
+                <p><b>Name:</b> Maria</p>
+                <p><b>Last Name:</b> Perez</p>
+                <button>Show more...</button>
+            </div>
+        </div>
+        <div class="person_container">
+            <div class="profile">
+                <img src="public/imgs/women2.png" alt="person2profile" width="200px" height="200px">
+            </div>
+            <div class="person_data">
+                <p><b>Name:</b> Antonia</p>
+                <p><b>Last Name:</b> Felipa</p>
+                <button>Show more...</button>
+            </div>
+        </div>
+    </section>
+    <section class="options">
+        <div id="dashboardColor">
+            <h3>Select a Color</h3>
+            <button style="background: #648fea" class="changeBtn">Blue</button>
+            <button style="background: #eae023" class="changeBtn">Yellow</button>
+            <button style="background: #91cc78" class="changeBtn">Green</button>
+            <button class="changeBtn">Reset</button>
+        </div>
+        <div id="dashboardTextSize">
+            <h3>Change Text Size</h3>
+            <input id="dhSize" type="text"/>
+            <button id="dshTextSize" data-target="#dhSize">Apply</button>
+        </div>
+    </section>
+</main>
+<script src="js/jquery-3.3.1.min.js"></script>
+<script>
+    (function ($) {
+        $(document).ready(function () {
+            const doc = $(this);
+            $('.changeBtn').on('click', function () {
+                const color = $(this).css('background-color');
+
+                doc.find('b').each(function (idx, ele) {
+
+                    $(ele).css('color', color);
+                });
+
+                doc.find('button').each(function (idx, ele) {
+                    if (!$(this).hasClass('changeBtn')) {
+                        $(ele).css('background', color);
+                    }
+                });
+
+            });
+
+            $('#dshTextSize').on('click', function () {
+                const sizeSource = $(this.dataset.target).val()
+                console.log(sizeSource);
+                doc.find('p').each(function (idx, ele) {
+                    $(ele).css('font-size', sizeSource+'px');
+                });
+
+            });
+        });
+    })(jQuery);
+</script>
+</body>
+</html>
