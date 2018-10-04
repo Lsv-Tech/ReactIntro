@@ -1,13 +1,3 @@
-class SizeInput extends React.Component {
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return React.createElement('input', {type: 'number', placeholder: 'insert a number'})
-    }
-}
-
 class ChTextButton extends React.Component {
     constructor(props) {
         super(props);
@@ -21,9 +11,8 @@ class ChTextButton extends React.Component {
                 'button',
                 {
                     onClick: function () {
-                        owner.props.parentHandler(false);
-                        owner.props.click_extra();
-                        owner.setState({pressed: false})
+                        owner.setState({pressed: false});
+                        owner.props.updateElements(false);
                     }
                 },
                 'Remove')
@@ -32,8 +21,8 @@ class ChTextButton extends React.Component {
                 'button',
                 {
                     onClick: function () {
-                        owner.props.parentHandler(true);
-                        owner.setState({pressed: true})
+                        owner.setState({pressed: true});
+                        owner.props.updateElements(true);
                     }
                 },
                 'Apply'
@@ -45,11 +34,16 @@ class ChTextButton extends React.Component {
 class TxtChangeContainer extends React.Component {
     constructor(props) {
         super(props);
-        this.state = {btnPressed: false}
+        this.state = {disableInput: false, inputValue: ''}
     }
 
-    HandleBtnState(state){
-        this.setState({btnPressed: state})
+
+    updateInput(state) {
+        this.setState({disableInput: state})
+    }
+
+    updateTxtSize(event) {
+        this.setState({inputValue: event.target.value})
     }
 
     changeDocument(TxtSize) {
@@ -58,11 +52,34 @@ class TxtChangeContainer extends React.Component {
         });
     }
 
+    cleanDocument() {
+        $(document).find('p').each(function (idx, ele) {
+            $(ele).css('font-size', '');
+        });
+    }
+
     render() {
-        const inputEnable = this.state.btnPressed ? {disabled: 'true'}: null;
+
+        const owner = this;
         const h3 = React.createElement('h3', null, 'Change Text Size');
-        const input = React.createElement(ChTextButton, inputEnable, null);
-        const btn = React.createElement(SizeInput, {parentHandler: this.HandleBtnState.bind(this)}, null);
+
+        const input = React.createElement('input',
+            {
+                type: 'number',
+                placeholder: 'insert a font-size',
+                disabled: owner.state.disableInput ? true : null,
+                value: owner.state.inputValue,
+                onChange: owner.updateTxtSize.bind(owner)
+            });
+
+        const btn = React.createElement(ChTextButton, {updateElements: owner.updateInput.bind(owner)});
+
+        if (owner.state.disableInput && owner.state.inputValue) {
+            owner.changeDocument(owner.state.inputValue)
+        } else {
+            owner.cleanDocument()
+        }
+
         return React.createElement(
             'div',
             {},
